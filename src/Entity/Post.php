@@ -31,6 +31,9 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     // normalizationContext: ['groups' => 'read'], // GET
     denormalizationContext: ['groups' => 'write'], // POST, PUT, PATCH
+    paginationItemsPerPage: 10,
+    paginationClientItemsPerPage: true,
+    paginationMaximumItemsPerPage: 50
 )]
 class Post
 {
