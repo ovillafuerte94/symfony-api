@@ -9,9 +9,12 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PostRepository;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post as Store;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -35,6 +38,12 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationClientItemsPerPage: true,
     paginationMaximumItemsPerPage: 50
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'title'         => 'partial', // exact, partial, start, end, word_start
+    'body'          => 'partial',
+    'category.name' => 'partial',
+])]
+#[ApiFilter(OrderFilter::class, properties: ['id'])]
 class Post
 {
     #[ORM\Id]
