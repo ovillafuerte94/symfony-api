@@ -22,11 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     operations: [
         new GetCollection(
-            normalizationContext: ['groups' => ['read', 'read:collection']]
+            normalizationContext: ['groups' => ['post:read', 'post:read:collection']]
         ),
         new Store(),
         new Get(
-            normalizationContext: ['groups' => ['read', 'read:item']]
+            normalizationContext: ['groups' => ['post:read', 'post:read:item']]
         ),
         new Put(),
         // new Delete(),
@@ -49,22 +49,22 @@ class Post
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups('read')]
+    #[Groups('post:read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['post:read', 'post:write'])]
     #[Assert\NotBlank]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['read:item', 'write'])]
+    #[Groups(['post:read:item', 'post:write'])]
     #[Assert\NotBlank]
     private ?string $body = null;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read')]
+    #[Groups('post:read')]
     #[Assert\NotBlank]
     private ?Category $category = null;
 
@@ -85,7 +85,7 @@ class Post
         return $this;
     }
 
-    #[Groups('read:collection')]
+    #[Groups('post:read:collection')]
     public function getSummary($length = 70): ?string
     {
         if (mb_strlen($this->body) <= $length) {
